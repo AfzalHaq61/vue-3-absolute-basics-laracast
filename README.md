@@ -46,3 +46,77 @@
     </script>
 </body>
 </html>
+
+2-video (Attribute Binding and Event Handling)
+
+// Here is a shortcut for div with classes or id
+
+// It will create a div with all these classes
+div.flex.justify-center.p-4.m-4
+
+// It will create a div with id of app
+div#app
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <style>
+        // this styling of html and body will automatically center the div vertically and horizentally
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            display: grid;
+            place-content: center;
+        }
+
+        .text-red {
+            color: red;
+        }
+
+        .text-green {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        // v-bind is call binding dynamic data to class or somthing
+        // v-on is used for even calling or generation
+        //you can use short form : for v-bind and @ for v-on 
+        <button
+            :class="active ? 'text-red' : 'text-green'"
+            @click="toggle"
+        >Click Me</button>
+
+        //you can also use full form like v-bind and v-on
+        <button
+            v-bind:class="active ? 'text-red' : 'text-green'"
+            v-on:click="toggle"
+        >Click Me</button>
+    </div>
+    
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    active: false
+                };
+            },
+
+            // function is made like this you have to make it in methods funciton other wise it will not work
+            methods: {
+                toggle() {
+                    this.active = ! this.active;
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
