@@ -120,3 +120,94 @@ div#app
     </script>
 </body>
 </html>
+
+3-Video (Lists, Conditionals, and Computed Properties)
+
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <title>Episode 3: Lists and Computed Properties</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    // you can add tailwind cdn like this.
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="h-full grid place-items-center">
+    <div id="app">
+        // Differenve between v-if and v-show is that v-show jsut toggle the visiblilty it onlay change display to hidden and not hidden other wise we can apply logic/condition through v-if
+        <section v-show="inProgressAssignments.length">
+            <h2 class="font-bold mb-2">In Progress</h2>
+            <ul>
+                // we can use v-for loop like this
+                // also assign key to loop because it assign it to every item in the loop so it make it unique and we can do our operation easily on every unqiue item. if we can assign key then it will give us errors.
+                <li
+                    v-for="assignment in inProgressAssignments"
+                    :key="assignment.id"
+                >
+                    <label>
+                        {{ assignment.name }}
+                        <input type="checkbox" v-model="assignment.complete">
+                    </label>
+                </li>
+            </ul>
+        </section>
+
+        <section v-show="completedAssignments.length" class="mt-8">
+            <h2 class="font-bold mb-2">Completed</h2>
+
+            <ul>
+                <li
+                    v-for="assignment in completedAssignments"
+                    :key="assignment.id"
+                >
+
+                <label>
+                        {{ assignment.name }}
+
+                        <input type="checkbox" v-model="assignment.complete">
+                    </label>
+                </li>
+            </ul>
+        </section>
+        
+        // Pre tags is used to display you data in json strigfy format.
+        <pre>
+            {{ assignments }}
+        </pre>
+    </div>
+
+    <script>
+        let app = {
+            data() {
+                return {
+                    assignments: [
+                        { name: 'Finish project', complete: false, id: 1 },
+                        { name: 'Read Chapter 4', complete: false, id: 2 },
+                        { name: 'Turn in Homework', complete: false, id: 3 },
+                    ]
+                }
+            },
+
+            // If you want some method to be cached.
+            // if we have a repeated code then we can used this.
+            // if we have some leangthy logics and reapeated againa and again and we want to cached it then we can use it
+            // just define computed: {}.
+            // then right computed property name like a fucntion and paste your logic and then just used its name like a data variable and it will work
+            computed: {
+                inProgressAssignments() {
+                    // we are taking filter on assignments it will take it on each one the assignment which is completed or else
+                    return this.assignments.filter(assignment => ! assignment.complete);
+                },
+
+                completedAssignments() {
+                    // we can fiter the assignment and the just loop each one and passed our logic on it
+                    return this.assignments.filter(assignment => assignment.complete);
+                }
+            }
+        };
+
+        Vue.createApp(app).mount('#app');
+    </script>
+</body>
+</html>
