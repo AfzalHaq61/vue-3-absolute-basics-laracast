@@ -262,3 +262,51 @@ div#app
     </script>
 </body>
 </html>
+
+5-Video(Episode 5: Extract Components to Their Own Files)
+
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <title>Episode 5: Extract Components to Their Own Files</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="h-full grid place-items-center">
+    <div id="app">
+        <app-button>Submit</app-button>
+    </div>
+    // there is some files like we are making in simple index html files then we can add type="module"
+    <script type="module">
+
+        // import component like this
+        import AppButton from "./js/components/AppButton.js";
+
+        // then rgister like this. it is ready to use.
+        let app = {
+            components: {
+                'app-button': AppButton
+            }
+        };
+
+        Vue.createApp(app).mount('#app');
+    </script>
+</body>
+</html>
+
+//Script Files this is a code which we use in the main file
+export default {
+    template: `
+        <button class="bg-gray-200 hover:bg-gray-400 border rounded px-5 py-2 disabled:cursor-not-allowed" :disabled="processing">
+            <slot />
+        </button>
+    `,
+
+    data() {
+        return {
+            processing: true
+        };
+    }
+}
