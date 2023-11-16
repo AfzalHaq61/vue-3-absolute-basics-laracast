@@ -310,3 +310,132 @@ export default {
         };
     }
 }
+
+6-Video (Episode 5: Extract Components to Their Own Files )
+
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <title>Episode 5: Extract Components to Their Own Files</title>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    // i added the spinner website url in the end
+    <style>
+        @keyframes spinner {
+            to {transform: rotate(360deg);}
+        }
+
+        // the class will first change the color to transparent and then load the spinner.
+
+        .is-loading { color: transparent; }
+
+        .is-loading:before {
+            content: '';
+            box-sizing: border-box;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin-top: -10px;
+            margin-left: -10px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            border-top-color: #000;
+            animation: spinner .6s linear infinite;
+        }
+    </style>
+</head>
+
+<body class="h-full grid place-items-center">
+    // processing is pass as a prop we can use its data in the app button
+    <div id="app">
+        <app-button :processing="true">Submit</app-button>
+    </div>
+
+    <script type="module">
+        // all the components will be declared in this file.
+        import App from "./js/components/App.js";
+
+        Vue.createApp(App).mount('#app');
+    </script>
+</body>
+</html>
+
+// App.js file
+// in this file all the components will be declared here and the then we will import this in the main file.
+
+import AppButton from "./AppButton.js";
+
+export default {
+    components: {
+        'app-button': AppButton
+    }
+};
+
+// Button.js file
+
+//you can see here dynamic classes we can bind classes like this. this method is called object method we can do this by arrays or something else. 
+// if the type is primaray so that statemnet will be true else other.
+//and the first one we make it true which will be for every props.
+export default {
+    template: `
+        <button 
+            :class="{
+                'border rounded px-5 py-2 disabled:cursor-not-allowed': true,
+                'bg-blue-600 hover:bg-blue-700': type === 'primary',
+                'bg-purple-200 hover:bg-purple-400': type === 'secondary',
+                'bg-gray-200 hover:bg-gray-400': type === 'muted',
+                'is-loading': processing
+            }" 
+            :disabled="processing"
+        >
+            <slot />
+        </button>
+    `,
+
+    //props are use like this.
+    // this will be in detail we define here as an object
+    // here is its type.
+    // also define default for it
+    props: {
+        type: {
+            type: String,
+            default: 'primary'
+        },
+
+        processing: {
+            type: Boolean,
+            default: false
+        }
+    }
+
+    or we can also do this like this
+    props: {
+        type: String,
+        processing: Boolean,
+    }
+}
+
+// adding spinner from this url
+https://stephanwagner.me/only-css-loading-spinner
+
+In Vue.js, there are certain attributes that are recognized by default, even without using the : binding syntax. These attributes include standard HTML attributes like class, style, and id. Therefore, when you use :class or :style, you are explicitly indicating to Vue.js that you want to bind those attributes dynamically.
+
+On the other hand, custom attributes, like processing and type in your example, are not automatically recognized for dynamic binding. If you want to dynamically bind a custom attribute, you need to use the : binding syntax.
+
+In your case:
+
+html
+Copy code
+<app-button :processing="false" type="secondary">Submit</app-button>
+:processing="false": This works because you are using the :, indicating that you want to bind the processing attribute dynamically.
+
+type="secondary": This might not work as expected if the type attribute is a custom attribute for your app-button component. To dynamically bind it, you should use :type:
+
+html
+Copy code
+<app-button :processing="false" :type="'secondary'">Submit</app-button>
+By using :type="'secondary'", you are explicitly telling Vue.js to bind the type attribute dynamically, even if it's a custom attribute.
