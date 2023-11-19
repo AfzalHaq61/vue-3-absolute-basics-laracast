@@ -439,3 +439,107 @@ html
 Copy code
 <app-button :processing="false" :type="'secondary'">Submit</app-button>
 By using :type="'secondary'", you are explicitly telling Vue.js to bind the type attribute dynamically, even if it's a custom attribute.
+
+7-Video (Episode 6: Bring it All Together)
+
+import Assignments from "./Assignments.js";
+import AssignmentList from "./AssignmentList.js";
+export default {
+    components are declared in two types.
+    components: {
+        //one way
+        'assignments': Assignments,
+        //second way. you cam use it like <assignments></assignments> or <Assignments></Assignments> both will work
+        Assignments,
+        AssignmentList
+    },
+
+    //we can also use component like this which is called simple file component
+    template: `
+        <assignments />
+
+        //both will work
+        //it will also work like this.
+        <assignment-list :assignments="filters.inProgress" title="In Progress"></assignment-list>
+        //if you use this the name are similer it will work
+        <AssignmentList :assignments="filters.inProgress" title="In Progress"></AssignmentList>
+    `,
+};
+
+// only make components of those which is used again and again you dont have need to make component of every things.
+
+we can also make a very beautiful and easy filters like this just like we create inProgress and completed
+filters() {
+        return {
+            inProgress: this.assignments.filter(assignment => ! assignment.complete),
+            completed: this.assignments.filter(assignment => assignment.complete)
+        };
+    }
+
+8-Video (Handle a Form Submission)
+
+// i have assign borders but it just shown all over the parent <ul> but not on li rows so we add devide-y it will add border to li itself.
+<ul class="border border-gray-600 divide-y divide-gray-600">
+
+// when you click on submit button @submit will just listen your event and directly call to your add function.
+<form @submit="add">
+<button type="submit" class="bg-white p-2 border-l">Add</button>
+
+// when there is no e.preventDefault() then when you submit the form then it refresh it after submit. else it will submit.
+ add(e) {
+    e.preventDefault();
+
+    alert('hello');
+}
+
+// you can also added @submit.prevent. It work the same.
+<form @submit.prevent="add">
+<button type="submit" class="bg-white p-2 border-l">Add</button>
+
+add() {
+    alert('hello');
+}
+
+// so we add/push new array to assignments
+methods: {
+        add() {
+            this.assignments.push({
+                name: name,
+                completed: false,
+                id: this.assignments.length + 1
+            });
+        }
+    }
+
+ 9-Video (Parent-Child State Communication)  
+
+ // if there is parent and child components so we can passed data to child component by the props but when you want to pass data from child to parent then you will create an event by this.$emit('name', value) and give it name and pass data in second arguments and the you can listen it by @name(functionName) and then call function functionName(acceptArguments) and you can do your job.
+
+// when this function called then it will create event by emit with name add and the seocnd argument us the value
+ methods: {
+        add() {
+            this.$emit('add', this.newAssignment);
+
+            this.newAssignment = '';
+        }
+    }
+
+// it will direct listen the add cusotm event in parent file and will call the funciton which is passed to it.
+<assignment-create @add="add"></assignment-create>
+
+// so in this mehtod it will recieve that data in name which is passed to the event and then add to the assigments array.
+methods: {
+        add(name) {
+            this.assignments.push({
+                name: name,
+                completed: false,
+                id: this.assignments.length + 1
+            });
+        }
+    }
+
+// we can also do it by this way
+// just passed the assigments array to the child component and add new assignment to it there it will work but it is wierd it will passed all the assignments array and add the new array to it
+props: {
+        assignments: Object
+    }
