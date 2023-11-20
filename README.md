@@ -543,3 +543,86 @@ methods: {
 props: {
         assignments: Object
     }
+
+10-Video(It's All So Easy)
+
+// in this video main focus is computed properties.
+// how to filter assignments by tags.
+// array maping.
+// set array by unique.
+// and make an array of set and add other elements to the array.
+// active tags.
+// filter tag by click on button tags
+
+// we are taking tags from computed property
+<div class="flex gap-2">
+    <button
+        v-for="tag in tags" 
+        class="border rounded px-1 py-px text-xs"
+    >{{ tag }}</button> 
+</div>
+
+computed: {
+    // when you want an object to map so that you take only one element from it so like we take only tag from it here.
+    tags() {
+        return this.assignments.map(a => a.tag);
+    }
+
+    // when we want to make it this array unique it will only take unique tags.
+    tags() {
+        return new Set(this.assignments.map(a => a.tag));
+    }
+
+    // here we make an array and add all to the array of first index. then set of tags in second index. but it will not give the second index value. it will gie it format so add ...to the second index like in the below
+    tags() {
+        return ['all', new Set(this.assignments.map(a => a.tag))];
+    }
+
+    // it will give correct data
+    tags() {
+            return ['all', ...new Set(this.assignments.map(a => a.tag))];
+        }
+}
+
+// tag button code and assigments table
+<div class="flex gap-2">
+    // when click on tag will pas tag into current tag.
+    // apply dynamic classes it will apply classes to that tag whcih active when tag is equal to current tag it will apply the classes
+    <button
+        @click="currentTag = tag"
+        v-for="tag in tags" 
+        class="border rounded px-1 py-px text-xs"
+        :class="{
+            'border-blue-500 text-blue-500': tag === currentTag 
+        }"
+    >{{ tag }}</button> 
+</div>
+// apply computed property to filter assignments.
+<ul class="border border-gray-600 divide-y divide-gray-600 mt-6">
+    <assignment 
+        v-for="assignment in filteredAssignments"
+        :key="assignment.id" 
+        :assignment="assignment"
+    ></assignment>
+</ul>
+
+// by defualt the current tag will be all.
+data() {
+    return {
+        currentTag: 'all'
+    };
+},
+
+// when current tag is all then it will return all the data.
+// when some other tag is active it will filter tha data by that tag
+computed: {
+    filteredAssignments() {
+        if (this.currentTag === 'all') {
+            return this.assignments;
+        }
+
+        return this.assignments.filter(a => a.tag === this.currentTag);
+    },
+}
+
+
