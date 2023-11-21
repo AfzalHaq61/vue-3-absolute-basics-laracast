@@ -625,4 +625,49 @@ computed: {
     },
 }
 
+11-Video (Component Responsibility)
+
+// we passed props as a name initial-tags(kebab case) but recive as a initialTag(camelcase).
+//In Vue.js, it's a common convention to use camelCase for prop names in the JavaScript/TypeScript code and kebab-case in the actual template. This is because HTML attributes are case-insensitive and are expected to be in kebab-case.
+
+In your case, you are following this convention. Your prop names in the JavaScript part (initialTags and currentTag) are in camelCase, while in the template, they are used in kebab-case (:initial-tags and :current-tag).
+
+This is the standard naming convention in Vue.js and helps maintain consistency throughout your application.
+<assignment-tags
+    :initial-tags="assignments.map(a => a.tag)" 
+    :current-tag="currentTag"
+    @change="currentTag = $event"
+></assignment-tags>
+
+props: {
+    initialTags: Array,
+    currentTag: String
+},
+
+
+// here we make an event and listen it in parent
+<button
+    @click="$emit('change', tag)"
+    v-for="tag in tags" 
+    class="border rounded px-1 py-px text-xs"
+    :class="{
+        'border-blue-500 text-blue-500': tag === currentTag 
+    }"
+>{{ tag }}</button> 
+</div>  
+
+// here in parent we listen to the event of @change and assign $event (which is called magic event it have the calue which is passed in this ievent). and assign it to currentTag which is in data.
+
+<assignment-tags
+    :initial-tags="assignments.map(a => a.tag)" 
+    :current-tag="currentTag"
+    @change="currentTag = $event"
+></assignment-tags>
+
+data() {
+    return {
+        currentTag: 'all'
+    };
+},
+
 
