@@ -670,4 +670,130 @@ data() {
     };
 },
 
+12-Video (A Deeper Look at V-Model)
+
+// In this video we just lern about the backend of v-model.
+// and also update data of parent component in child component with help of v-model.
+
+// it will work reactive both accepting and recieving (mean binding and listen to it when changed)
+<input type="checkbox" v-model="name" class="ml-3">
+
+// but it will not as reactive if you change from data it will change but when you change in input it will not change in data.
+<input type="checkbox" :value="name" class="ml-3">
+
+// it will work reactively. bascially it is the long term of v-model are it is the backend of v-model.
+<input type="checkbox" :value="name" @input="name = $event.target.value">
+
+data() {
+    return {
+        name: ''
+    }
+},
+
+// old code
+// here we pass current tag data in props and then we change and create an event and then listen it in parent and teh change value of current tag in data.
+
+// parent code
+<assignment-tags
+    :initial-tags="assignments.map(a => a.tag)" 
+    :current-tag="currentTag"
+    @change="currentTag = $event"
+></assignment-tags>
+
+data() {
+    return {
+        currentTag: 'all'
+    };
+},
+
+// child code
+<button
+    @click="$emit('change', tag)"
+    v-for="tag in tags" 
+    class="border rounded px-1 py-px text-xs"
+    :class="{
+        'border-blue-500 text-blue-500': tag === currentTag 
+    }"
+>{{ tag }}</button> 
+</div>  
+
+props: {
+    initialTags: Array,
+    currentTag: String
+},
+
+<!-- end old code -->
+
+<!-- start new code -->
+
+// new code with defualt v-model name modelValue
+// we did'nt pass any value just pass current tag in v-model and then we can recieve it in props by name 'modelValue' (which is by default name)
+// we can also update that model value in child component like we did it here 
+// @click="$emit('update:modelValue', tag)"
+// when the button is click it will update model value.
+// so we update data of parent component in child component with the help of v-model
+
+// parent code
+<assignment-tags
+    v-mogdel="currentTag"
+    :initial-tags="assignments.map(a => a.tag)" 
+></assignment-tags>
+
+data() {
+    return {
+        currentTag: 'all'
+    };
+},
+
+// child code
+<button
+    @click="$emit('update:modelValue', tag)"
+    v-for="tag in tags" 
+    class="border rounded px-1 py-px text-xs"
+    :class="{
+        'border-blue-500 text-blue-500': tag === modelValue 
+    }"
+>{{ tag }}</button> 
+
+props: {
+        initialTags: Array,
+        modelValue: String
+    },
+
+// new code with custom v-model name current tag.
+// here we assign name to v-model 'currentTag' like this v-mogdel:currentTag="currentTag"
+// we will use this name in child component.
+// in recieving in props.
+// in updateing we will use the name instead of @click="$emit('update:currentTag', tag)"
+// we did'nt pass any value just pass current tag in  
+
+// parent code
+<assignment-tags
+    v-mogdel:currentTag="currentTag"
+    :initial-tags="assignments.map(a => a.tag)" 
+></assignment-tags>
+
+data() {
+    return {
+        currentTag: 'all'
+    };
+},
+
+// child code
+<button
+    @click="$emit('update:currentTag', tag)"
+    v-for="tag in tags" 
+    class="border rounded px-1 py-px text-xs"
+    :class="{
+        'border-blue-500 text-blue-500': tag === currentTag 
+    }"
+>{{ tag }}</button> 
+
+props: {
+        initialTags: Array,
+        currentTag: String
+    },
+
+/
+
 
