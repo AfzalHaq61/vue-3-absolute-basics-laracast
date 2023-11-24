@@ -794,6 +794,78 @@ props: {
         currentTag: String
     },
 
-/
+13-Video (Lifecycle Hooks, Fake APIs, and AJAX)
+
+1.we will make fake api with a tool called json server.
+2.lifecycle hooks.
+3.Ajax
+
+// install json-server by this command.
+npm install json-server --save-dev
+
+// make a file with name db.json and paste the data
+{
+    "assignments": [
+      {
+        "name": "Finish project",
+        "complete": false,
+        "id": 1,
+        "tag": "math"
+      },
+  
+      {
+        "name": "Read chapter 4",
+        "complete": false,
+        "id": 1,
+        "tag": "science"
+      },
+  
+      {
+        "name": "Turn in homework",
+        "complete": false,
+        "id": 1,
+        "tag": "math"
+      },
+  
+      {
+        "name": "Finish Laracasts video",
+        "complete": true,
+        "id": 1,
+        "tag": "programming"
+      }
+    ]
+  }
+
+// run this command and it will run the server which will show you the fake api. then you can fetch data from it.
+npx json-server db.json
+
+// you can change the server port like this.
+npx json-server db.json -p 3001
+
+// life cycle hooks.
+// when vue project is rendered then hook will be called by this priority. and these hook have the same name of functions. so we will called its function.
+1.beforeCreate()
+2.create()
+3.beforeMount()
+4.mounted()
+5.beforeUnmount
+6.unmount
+
+// so if we called some data from api or database we will call it in created method.
+// we are feching data from api by fetch() method.
+// fetch work on promiss.
+// promiss mean it will say if i get these data i will give it.
+// we will pass a request then call .then it mean when fetch have data then give me that response.json() in response.
+// and when we have it then give me this data in assigmnets and we will pass it to assigmnets in data and the we are good to go.
+// we can also use axios.
+
+created() {
+    fetch('http://localhost:3001/assignments')
+        .then(response => response.json())
+        .then(assignments => {
+            this.assignments = assignments;
+        });
+},
+
 
 
