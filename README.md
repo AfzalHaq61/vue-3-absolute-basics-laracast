@@ -867,5 +867,37 @@ created() {
         });
 },
 
+14-Video (More Flexible Components With Slots and Flags)
+
+// we can serve vue project through this command.
+npx serve
+
+// we cun run our database by this command
+npx json-server db.json -p 3001
+
+but we can also added these commands to sctipt then we can just run by one command
+{
+  "scripts": {
+    // if there is only one & then it means that run these sommands simultaneously.
+    "start": "npx serve & npx json-server db.json -p 3001"
+    // if there is two ends then it means that when one command is completed then run the other
+    "start": "npx serve && npx json-server db.json -p 3001"
+  },
+  "devDependencies": {
+    "json-server": "^0.17.4"
+  }
+}
+
+// child component
+<section v-show="assignments.length" class="w-60">
+    <slot></slot>
+</section> 
+
+// parent component
+whatever we past in between these component it will go to the slot
+<assignment-list :assignments="filters.inProgress" title="In Progress">
+    <assignment-create @add="add"></assignment-create> 
+</assignment-list>
+
 
 
