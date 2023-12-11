@@ -899,5 +899,51 @@ whatever we past in between these component it will go to the slot
     <assignment-create @add="add"></assignment-create> 
 </assignment-list>
 
+15-Video (Named Slots)
 
+// if you use component and write classes on it then it will merge with compnent classes.
+// we are using props like this
+<h2 class="font-bold mb-2">{{ heading }}</h2>
+// and we can also use like this
+<h2 class="font-bold mb-2" v-text="heading"></h2>
+
+parent component
+<panel>
+    // if you want to use custom slot then you can call it like this
+    <template v-slot:footer>
+        my footer
+    </template>
+
+    // you can also call it like this
+    <template #footer>
+        my footer
+    </template>
+
+    //and for the by default slot
+    <template #default>
+        my footer
+    </template>
+
+    // or just write in the components between
+</panel>
+
+child component
+
+// if you have a slot and you want to render it only when it have data like if you have data in heading then render heading slot 
+v-if="$slots.heading"
+$slot have all the slot. if it heading have data then it will be render other wise not.
+<div>
+    // heading slot
+    <h2 v-if="$slots.heading" class="font-bold mb-2">
+        <slot name="heading" /> 
+    </h2> 
+    
+    // default slot
+    <slot />
+    
+    // this is footer slot
+    <footer v-if="$slots.footer" class="border-gray-600 border-t mt-4 pt-4 text-sm">
+        <slot name="footer"></slot> 
+    </footer>
+</div> 
 
